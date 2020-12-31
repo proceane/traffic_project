@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Gentelella Alela! | </title>
+
+    <!-- Bootstrap -->
+    <link href="{% static '/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static '/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static '/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static '/build/css/custom.min.css' %}" rel="stylesheet">
+
+    <!--추가 css -->
+    <link href="{% static '/css/custom/style.css' %}" rel="stylesheet">
+
+    <style type="text/css">
+      .timeline .block{
+        margin-left: 140px;
+      }
+
+      .timeline .tags{
+        width: 120px;
+      }
+
+      .timeline h2.title:before {
+        top: 12px;
+      }
+
+    </style>
+  </head>
+
+  <body class="nav-sm">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-car"></i> <span>Traffic</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a href="/"><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  
+                  </li>
+                  <!-- <li><a href="/statistics"><i class="fa fa-bar-chart"></i> Statistics <span class="fa fa-chevron-down"></span></a>
+                    
+                  </li> -->
+                  <li class="current-page"><a href="/infomation"><i class="fa fa-info"></i> Infomation <span class="fa fa-chevron-down"></span></a>
+                    
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <nav class="nav navbar-nav">
+              
+              </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="row justify-content-center">
+              <div class="col-md-10">
+                <div class="page-title">
+                  <div class="">
+                    <h3>Information </h3>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            
+            <div class="clearfix"></div>
+
+            <div class="row justify-content-center">
+              <div class="col-lg-10">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Q&A </h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="col-md-12">
+                      <div class="x_title">
+                        <h4>소개</h4>
+                      </div>
+                      <div class="x_content">
+                        <ul class="to_do">
+                          <li>어떤 사이트인가요?</li>
+                          <li class="pull-right">고속도로 구간별 실시간 도로교통상황을 시각화하여 보여주는 사이트입니다.</li>
+                          <br><br><br>
+                          <li>데이터의 출처는 어디인가요?</li>
+                          <li class="pull-right">
+                            한국도로공사의 공공데이터인 '실시간 소통 데이터', 'VMS 표출내용 현황', '실시간 권역별 교통량' 데이터입니다.
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-lg-10">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Stack</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="row stack-list">
+                      <div class="col-md-6">
+                        <h2>Framework</h2>
+                        <div class="image">
+                          <img class="logo" src="https://static.djangoproject.com/img/logos/django-logo-positive.svg">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <h2>Back-end / Data Crawling</h2>
+                        <div class="image">
+                          <img class="logo" src="https://www.python.org/static/community_logos/python-logo-generic.svg">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row stack-list">
+                      <div class="col-lg-6">
+                        <h2>Front-end</h2>
+                        <img class="logo" src="https://cdn.worldvectorlogo.com/logos/javascript.svg">
+                        <img class="logo" src="https://cdn.worldvectorlogo.com/logos/jquery-1.svg">
+                      </div>
+                      <div class="col-lg-6">
+                        <h2>Design</h2>
+                        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg">
+                        <img class="logo" src="https://cdn.worldvectorlogo.com/logos/css-3.svg">
+                        <img class="logo" src="https://cdn.worldvectorlogo.com/logos/bootstrap-4.svg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% static '/vendors/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+   <script src="{% static '/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static '/vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static '/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- ECharts -->
+    <script src="{% static '/vendors/echarts/dist/echarts.min.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static '/build/js/custom.min.js' %}"></script>
+
+  </body>
+</html>

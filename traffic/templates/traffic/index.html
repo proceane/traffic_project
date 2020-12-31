@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="icon" href="images/favicon.ico" type="image/ico" />
+
+    <title>Traffic Infomation</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static '/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static '/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static '/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+	
+    <!-- bootstrap-progressbar -->
+    <link href="{% static '/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{% static '/vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static '/vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static '/build/css/custom.min.css' %}" rel="stylesheet">
+
+    <!--추가 css -->
+    <link href="{% static '/css/custom/style.css' %}" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="{% static '/vendors/jquery/dist/jquery.min.js'%}"></script>
+
+    <!-- speed gauges canvas js-->
+    <script type="text/javascript" src="{% static '/build/js/canvas-gauge/gauge.min.js' %}"></script>
+
+    <!-- ECharts -->
+    <script src="{% static '/vendors/echarts/dist/echarts.min.js'%}"></script>
+    <script src="{% static '/vendors/echarts/map/js/world.js'%}"></script>
+
+    <!-- Chart.js -->
+    <script src="{% static '/vendors/Chart.js/dist/Chart.min.js' %}"></script>
+
+    <script type="text/javascript">
+      // $(document).ready(function(){
+      //   if($("#select_road option:selected").val() == '' && $("#select_loca option:selected").val() == '' && $("#select_con option:selected").val() == ''){
+              
+      //         $.ajax({
+      //           url : '/',
+      //           data : {
+      //             'conzone_id' : '0010CZE480',
+      //             'route_no' : '0010',
+      //             'updown_type_code' : 'E'
+      //           },
+      //           /*dataType : 'json',*/
+      //           success : function(result){
+      //               console.log("success");
+      //               console.log(result);
+      //           },
+      //           error : function(request, status, error) {
+      //             console.log(error);
+      //           }
+
+      //         })
+
+      //     }
+      // });
+
+
+      /*setTimeout("location.reload()", 30000);*/
+
+      $(document).ready(function(){
+
+          $("#select_road").change(function(){
+              if($(this).val() != ""){
+                var roadCode = $(this).val();
+                $.ajax({
+                  type : "GET",
+                  url : "/getConzoneCode",
+                  data : {'roadCode' : roadCode},
+                  dataType : "json",
+                  success : function(response){
+                    /*var context = JSON.stringify(response['context']);*/
+                    var context = response['context'];
+                    //console.log("response success : " + context);
+                    var str = '<option value="">구간 선택</option>';
+                    $("#select_con").empty();
+                    for(var i in context){
+                      //console.log(context[i].conzone_id +", " + context[i].conzone_name + ", " + context[i].updown_type_code);
+                      str += '<option value="'+context[i].conzone_id+'" {% if '+context[i].conzone_id+' == param.conzone_id %}selected{% endif %}>'+context[i].conzone_name+'</option>'
+                    }
+                    $("#select_con").append(str);
+
+                  }
+
+                });
+              }
+              
+
+          });
+
+          $("#select_con").change(function(){
+              if($(this).val() != ""){
+                var roadCode = $("#select_road").val();
+                var conzone_id = $(this).val();
+                $.ajax({
+                  type : "GET",
+                  url : "/getUpDownCode",
+                  data : {"roadCode" : roadCode, "conzone_id" : conzone_id},
+                  dataType : "json",
+                  success : function(response){
+                      var context = response['context'];
+
+                      for(var i in context){
+                        $("#updown_type_code").val(context[i].updown_type_code);
+                      }
+                      
+                  }
+                });
+              }
+              
+          });
+      });
+
+      //검색조건 초기화
+      function fn_clean(){
+        $("#select_road").val("");
+        $("#select_con").empty();
+        var str = '<option value="">구간 선택</option>';
+        $("#select_con").append(str);
+        $("#select_loca").val("");
+      }
+
+
+    </script>
+    
+  </head>
+
+  <body class="nav-sm">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="/" class="site_title"><i class="fa fa-car"></i> <span>Traffic</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a href="/"><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  
+                  </li>
+                  <!-- <li><a href="/statistics"><i class="fa fa-bar-chart"></i> Statistics <span class="fa fa-chevron-down"></span></a>
+                    
+                  </li> -->
+                  <li><a href="/infomation"><i class="fa fa-info"></i> Infomation <span class="fa fa-chevron-down"></span></a>
+                    
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>        
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <!-- top tiles -->
+          <div class="row justify-content-center">
+            <div class="col-lg-9">
+              <div class="x_panel">
+                <form class="" name="search_form" action="/" method="get">
+                  <input type="hidden" id="updown_type_code" name="updown_type_code" value="">
+                  <div class="row">
+                    <div class="col-lg-1">
+                      <h2><i class="fa fa-search"></i></h2>
+                    </div>
+                    <div class="col-lg-4">
+                      <select id="select_road" name="route_no" class="form-control" title="노선 선택">
+                        <option value="">노선 선택</option>
+                        <option value="10" {% if 10 == param.route_no %}selected{% endif %}>경부선</option>
+                        <option value="100" {% if 100 == param.route_no %}selected{% endif %}>남해선(순천-부산)</option>
+                        <option value="101" {% if 101 == param.route_no %}selected{% endif %}>남해선(영암-순천)</option>
+                        <option value="105" {% if 105 == param.route_no %}selected{% endif %}>부산신항선</option>
+                        <option value="120" {% if 120 == param.route_no %}selected{% endif %}>광주대구선</option>
+                        <option value="121" {% if 121 == param.route_no %}selected{% endif %}>무안광주선</option>  
+                        <option value="140" {% if 140 == param.route_no %}selected{% endif %}>고창담양선</option>  
+                        <option value="141" {% if 141 == param.route_no %}selected{% endif %}>함양울산선</option>  
+                        <option value="150" {% if 150 == param.route_no %}selected{% endif %}>서해안선</option> 
+                        <option value="153" {% if 153 == param.route_no %}selected{% endif %}>평택시흥선</option>  
+                        <option value="160" {% if 160 == param.route_no %}selected{% endif %}>울산선</option>  
+                        <option value="170" {% if 170 == param.route_no %}selected{% endif %}>평택화성선</option>  
+                        <option value="171" {% if 171 == param.route_no %}selected{% endif %}>오산화성선</option>  
+                        <option value="172" {% if 172 == param.route_no %}selected{% endif %}>서울문산선</option>  
+                        <option value="173" {% if 173 == param.route_no %}selected{% endif %}>서울문산지선</option> 
+                        <!-- <option value="174">수원광명선</option>  --> 
+                        <option value="200" {% if 200 == param.route_no %}selected{% endif %}>대구포항선</option>  
+                        <option value="201" {% if 201 == param.route_no %}selected{% endif %}>익산장수선</option>  
+                        <option value="251" {% if 251 == param.route_no %}selected{% endif %}>호남선</option>  
+                        <option value="252" {% if 252 == param.route_no %}selected{% endif %}>논산천안선</option>  
+                        <option value="270" {% if 270 == param.route_no %}selected{% endif %}>순천완주선</option>  
+                        <option value="290" {% if 290 == param.route_no %}selected{% endif %}>구리포천선</option>  
+                        <option value="300" {% if 300 == param.route_no %}selected{% endif %}>청주영덕선</option>  
+                        <option value="301" {% if 301 == param.route_no %}selected{% endif %}>당진대전선</option>  
+                        <option value="320" {% if 320 == param.route_no %}selected{% endif %}>옥산오창선</option>  
+                        <option value="351" {% if 351 == param.route_no %}selected{% endif %}>통영대전선</option>  
+                        <option value="352" {% if 352 == param.route_no %}selected{% endif %}>중부선</option>  
+                        <option value="370" {% if 370 == param.route_no %}selected{% endif %}>제2중부선</option>  
+                        <option value="400" {% if 400 == param.route_no %}selected{% endif %}>평택제천선</option>  
+                        <option value="450" {% if 450 == param.route_no %}selected{% endif %}>중부내륙선</option>  
+                        <option value="500" {% if 500 == param.route_no %}selected{% endif %}>영동선</option>  
+                        <option value="520" {% if 520 == param.route_no %}selected{% endif %}>광주원주선</option>  
+                        <option value="550" {% if 550 == param.route_no %}selected{% endif %}>중앙선</option>  
+                        <option value="552" {% if 552 == param.route_no %}selected{% endif %}>대구부산선</option>  
+                        <option value="600" {% if 600 == param.route_no %}selected{% endif %}>서울양양선</option>  
+                        <option value="650" {% if 650 == param.route_no %}selected{% endif %}>동해선(삼척-속초)</option>
+                        <option value="651" {% if 651 == param.route_no %}selected{% endif %}>부산울산선</option>  
+                        <option value="652" {% if 652 == param.route_no %}selected{% endif %}>동해선(부산-포항)</option>
+                        <option value="1000" {% if 1000 == param.route_no %}selected{% endif %}>수도권제1순환선</option>
+                        <option value="1020" {% if 1020 == param.route_no %}selected{% endif %}>남해1지선</option> 
+                        <option value="1040" {% if 1040 == param.route_no %}selected{% endif %}>남해2지선</option> 
+                        <option value="1100" {% if 1100 == param.route_no %}selected{% endif %}>제2경인선</option> 
+                        <option value="1102" {% if 1102 == param.route_no %}selected{% endif %}>인천대교선</option> 
+                        <option value="1200" {% if 1200 == param.route_no %}selected{% endif %}>경인선</option> 
+                        <option value="1300" {% if 1300 == param.route_no %}selected{% endif %}>인천공항선</option> 
+                        <option value="1510" {% if 1510 == param.route_no %}selected{% endif %}>서천공주선</option> 
+                        <option value="1710" {% if 1710 == param.route_no %}selected{% endif %}>용인서울선</option> 
+                        <option value="2510" {% if 2510 == param.route_no %}selected{% endif %}>호남지선</option>  
+                        <option value="3000" {% if 3000 == param.route_no %}selected{% endif %}>대전남부선</option> 
+                        <option value="3010" {% if 3010 == param.route_no %}selected{% endif %}>상주영천선</option> 
+                        <option value="3300" {% if 3300 == param.route_no %}selected{% endif %}>제3경인선</option> 
+                        <option value="4000" {% if 4000 == param.route_no %}selected{% endif %}>봉담동탄선</option> 
+                        <option value="4001" {% if 4001 == param.route_no %}selected{% endif %}>인천김포선</option> 
+                        <option value="4002" {% if 4002 == param.route_no %}selected{% endif %}>구리포천지선</option>  
+                        <option value="4510" {% if 4510 == param.route_no %}selected{% endif %}>중부내륙지선</option>  
+                        <option value="5510" {% if 5510 == param.route_no %}selected{% endif %}>중앙선지선</option> 
+                        <option value="6000" {% if 6000 == param.route_no %}selected{% endif %}>부산외곽선</option> 
+                      </select>
+                    </div>
+                    <div class="col-lg-4">
+                      <select id="select_con" name="conzone_id" class="form-control" title="구간 선택">
+                        <option value="">구간 선택</option>
+                        <option value="{{traffic_data.conzone_id}}" selected>{{traffic_data.conzone_name}}</option>
+                      </select>
+                    </div>
+                    <!-- <div class="col-lg-3">
+                      <select id="select_loca" name="updown_type_code" class="form-control" title="방향 선택">
+                        <option value="">방향 선택</option>
+                      </select>
+                    </div> -->
+                    <div class="col-lg-2">
+                      <button type="submit" class="btn btn-success">검색</button>
+                      <button onclick="fn_clean();" class="btn btn-secondary">초기화</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+             
+          <!--전체 요약 통계량 표시 start-->
+          <div class="row justify-content-center">
+            <div class="col-lg-9">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2 class="long_h2">
+                      {{traffic_data.route_name}} {{traffic_data.conzone_name}} 
+                      구간 통계량
+                      <div class="pull-right">기준시각 {{traffic_data.date_year}}.{{traffic_data.date_month}}.{{traffic_data.date_date}} {{traffic_data.time_hour}}:{{traffic_data.time_min}}</div>
+                  </h2>
+                  <div class="clearfix">
+                  </div>
+                </div>
+                <div class="tile_count">
+                  <div class="col-sm-6 col-md-3 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-car"></i> 교통량</span>
+                    <div class="count">{{traffic_data.traffic_amount}}<div class="unit">대</div></div>
+                  </div>
+                  <div class="col-sm-6 col-md-3 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-clock-o"></i> 통행시간</span>
+                    <div class="count">{{traffic_data.time_avg}}<div class="unit">분</div></div>
+                  </div>
+                  <div class="col-sm-6 col-md-3 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-align-right"></i> 평균속도</span>
+                    <div class="count">{{traffic_data.speed}}<div class="unit">km/h</div></div>
+                  </div>
+                  <div class="col-sm-6 col-md-3 tile_stats_count">
+                    <span class="count_top"><i class="fa fa-pie-chart"></i> 점유율</span>
+                    <div class="count">{{traffic_data.share_ratio}}<div class="unit">%</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--전체 요약 통계량 표시 end-->
+          <!-- /top tiles -->
+
+
+          
+          <br />
+
+          <!--지도는 여기에 start-->
+          <div class="row">
+      
+            <!--지도 start-->
+            <div class="col-lg-8">
+              
+              <div class="x_panel" id="mapArea">
+                <div class="x_title">
+                  <h2>
+                      도로교통정보 지도
+                  </h2>
+                  <div class="clearfix">
+                  </div>
+                </div>
+                <div class="x_content">
+                  <div class="map_wrap">
+                    <div id="map" style="width:100%;height:500px;margin: 0 auto;"></div>
+
+                    <div id="menu_wrap" class="bg_white">
+                      <div class="option">
+                          <div>
+                              <form onsubmit="searchPlaces(); return false;">
+                                  키워드 : <input type="text" value="{{traffic_data.conzone_1}}" id="keyword" size="15" placeholder="장소 입력"> 
+                                  <button type="submit">검색하기</button> 
+                              </form>
+                          </div>
+                      </div>
+                      <hr>
+                      <ul id="placesList"></ul>
+                      <div id="pagination"></div>
+                    </div>
+                  </div>
+                  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36ab882b0e80e0669f57a520b0c35ff4&libraries=services"></script>
+                  <script>
+                      // 마커를 담을 배열입니다
+                      var markers = [];
+
+                      var container = document.getElementById('map');
+                      var options = {
+                          center: new kakao.maps.LatLng(33.450701, 126.570667),
+                          level: 3
+                      };
+
+                      var map = new kakao.maps.Map(container, options);
+                      map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);    
+
+                      // 장소 검색 객체를 생성합니다
+                      var ps = new kakao.maps.services.Places();  
+
+                      // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+                      var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+                      // 키워드로 장소를 검색합니다
+                      searchPlaces();
+
+                      // 키워드 검색을 요청하는 함수입니다
+                      function searchPlaces() {
+
+                          var keyword = document.getElementById('keyword').value;
+
+                          if (!keyword.replace(/^\s+|\s+$/g, '')) {
+                              alert('키워드를 입력해주세요!');
+                              return false;
+                          }
+
+                          // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+                          ps.keywordSearch( keyword, placesSearchCB); 
+                      }
+
+                      // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+                      function placesSearchCB(data, status, pagination) {
+                          if (status === kakao.maps.services.Status.OK) {
+
+                              // 정상적으로 검색이 완료됐으면
+                              // 검색 목록과 마커를 표출합니다
+                              displayPlaces(data);
+
+                              // 페이지 번호를 표출합니다
+                              displayPagination(pagination);
+
+                          } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+                              alert('검색 결과가 존재하지 않습니다.');
+                              return;
+
+                          } else if (status === kakao.maps.services.Status.ERROR) {
+
+                              alert('검색 결과 중 오류가 발생했습니다.');
+                              return;
+
+                          }
+                      }
+
+                      // 검색 결과 목록과 마커를 표출하는 함수입니다
+                      function displayPlaces(places) {
+
+                          var listEl = document.getElementById('placesList'), 
+                          menuEl = document.getElementById('menu_wrap'),
+                          fragment = document.createDocumentFragment(), 
+                          bounds = new kakao.maps.LatLngBounds(), 
+                          listStr = '';
+                          
+                          // 검색 결과 목록에 추가된 항목들을 제거합니다
+                          removeAllChildNods(listEl);
+
+                          // 지도에 표시되고 있는 마커를 제거합니다
+                          removeMarker();
+                          
+                          for ( var i=0; i<places.length; i++ ) {
+
+                              // 마커를 생성하고 지도에 표시합니다
+                              var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+                                  marker = addMarker(placePosition, i), 
+                                  itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+                              // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                              // LatLngBounds 객체에 좌표를 추가합니다
+                              bounds.extend(placePosition);
+
+                              // 마커와 검색결과 항목에 mouseover 했을때
+                              // 해당 장소에 인포윈도우에 장소명을 표시합니다
+                              // mouseout 했을 때는 인포윈도우를 닫습니다
+                              (function(marker, title) {
+                                  kakao.maps.event.addListener(marker, 'mouseover', function() {
+                                      displayInfowindow(marker, title);
+                                  });
+
+                                  kakao.maps.event.addListener(marker, 'mouseout', function() {
+                                      infowindow.close();
+                                  });
+
+                                  itemEl.onmouseover =  function () {
+                                      displayInfowindow(marker, title);
+                                  };
+
+                                  itemEl.onmouseout =  function () {
+                                      infowindow.close();
+                                  };
+                              })(marker, places[i].place_name);
+
+                              fragment.appendChild(itemEl);
+                          }
+
+                          // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+                          listEl.appendChild(fragment);
+                          menuEl.scrollTop = 0;
+
+                          // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+                          map.setBounds(bounds);
+                      }
+
+                      // 검색결과 항목을 Element로 반환하는 함수입니다
+                      function getListItem(index, places) {
+
+                          var el = document.createElement('li'),
+                          itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                                      '<div class="info">' +
+                                      '   <h5>' + places.place_name + '</h5>';
+
+                          if (places.road_address_name) {
+                              itemStr += '    <span>' + places.road_address_name + '</span>' +
+                                          '   <span class="jibun gray">' +  places.address_name  + '</span>';
+                          } else {
+                              itemStr += '    <span>' +  places.address_name  + '</span>'; 
+                          }
+                                       
+                            itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                                      '</div>';           
+
+                          el.innerHTML = itemStr;
+                          el.className = 'item';
+
+                          return el;
+                      }
+
+                      // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+                      function addMarker(position, idx, title) {
+                          var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                              imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+                              imgOptions =  {
+                                  spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                                  spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                                  offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                              },
+                              markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                                  marker = new kakao.maps.Marker({
+                                  position: position, // 마커의 위치
+                                  image: markerImage 
+                              });
+
+                          marker.setMap(map); // 지도 위에 마커를 표출합니다
+                          markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+                          return marker;
+                      }
+
+                      // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+                      function removeMarker() {
+                          for ( var i = 0; i < markers.length; i++ ) {
+                              markers[i].setMap(null);
+                          }   
+                          markers = [];
+                      }
+
+                      // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+                      function displayPagination(pagination) {
+                          var paginationEl = document.getElementById('pagination'),
+                              fragment = document.createDocumentFragment(),
+                              i; 
+
+                          // 기존에 추가된 페이지번호를 삭제합니다
+                          while (paginationEl.hasChildNodes()) {
+                              paginationEl.removeChild (paginationEl.lastChild);
+                          }
+
+                          for (i=1; i<=pagination.last; i++) {
+                              var el = document.createElement('a');
+                              el.href = "#";
+                              el.innerHTML = i;
+
+                              if (i===pagination.current) {
+                                  el.className = 'on';
+                              } else {
+                                  el.onclick = (function(i) {
+                                      return function() {
+                                          pagination.gotoPage(i);
+                                      }
+                                  })(i);
+                              }
+
+                              fragment.appendChild(el);
+                          }
+                          paginationEl.appendChild(fragment);
+                      }
+
+                      // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+                      // 인포윈도우에 장소명을 표시합니다
+                      function displayInfowindow(marker, title) {
+                          var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+                          infowindow.setContent(content);
+                          infowindow.open(map, marker);
+                      }
+
+                       // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+                      function removeAllChildNods(el) {   
+                          while (el.hasChildNodes()) {
+                              el.removeChild (el.lastChild);
+                          }
+                      }
+                  </script>
+                </div>
+              </div>
+            </div>
+            <!--지도 end-->
+
+            <!--전광판안내 데이터 start-->
+            <div class="col-lg-4">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>{{traffic_data.route_name}} 전광판 안내</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <div class="dashboard-widget-content">
+
+                    <ul class="list-unstyled timeline widget">
+                      {%for vms in vms_msg_data%}
+                        {%if vms.vmsmessage != None and vms.vmsmessage2 != None%}
+                          <li>
+                            <div class="block">
+                              <div class="block_content">
+                                <h2 class="title">
+                                  <a>{{vms.vmsmessage}}</a>
+                                </h2>
+                                <p class="excerpt">
+                                  {{vms.vmsmessage2}}
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                        {%endif%}
+                      {% endfor %}
+                     
+                    </ul>
+                  </div>
+
+                  
+                </div>
+              </div>
+            </div>
+            <!--전광판 안내 데이터 end-->
+            
+          </div>
+          <!--지도는 여기에 end-->
+
+          <div class="row">
+
+            <!--Top 5 data start-->
+            <div class="col-lg-12 ">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2 class="long_h2">Top 5
+                    <div class="pull-right">기준시각 {{traffic_data.date_year}}.{{traffic_data.date_month}}.{{traffic_data.date_date}} {{traffic_data.time_hour}}:{{traffic_data.time_min}}</div>
+                  </h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <div class="col-lg-4">
+                    <div class="x_title">
+                      <h2>교통량</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <div id="amount_bar_horizontal" style="height:370px;"></div>
+                      
+                    </div>
+                  </div>
+                  <script type="text/javascript">
+                    //echart Bar Horizontal
+                    var theme = {
+                        color: [
+                            '#26B99A', '#34495E', '#BDC3C7', '#3498DB',
+                            '#9B59B6', '#8abb6f', '#759c6a', '#bfd3b7'
+                        ],
+
+                        title: {
+                            itemGap: 8,
+                            textStyle: {
+                                fontWeight: 'normal',
+                                color: '#408829'
+                            }
+                        },
+
+                        dataRange: {
+                            color: ['#1f610a', '#97b58d']
+                        },
+
+                        toolbox: {
+                            color: ['#408829', '#408829', '#408829', '#408829']
+                        },
+
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            axisPointer: {
+                                type: 'line',
+                                lineStyle: {
+                                    color: '#408829',
+                                    type: 'dashed'
+                                },
+                                crossStyle: {
+                                    color: '#408829'
+                                },
+                                shadowStyle: {
+                                    color: 'rgba(200,200,200,0.3)'
+                                }
+                            }
+                        },
+
+                        dataZoom: {
+                            dataBackgroundColor: '#eee',
+                            fillerColor: 'rgba(64,136,41,0.2)',
+                            handleColor: '#408829'
+                        },
+                        grid: {
+                            borderWidth: 0
+                        },
+
+                        categoryAxis: {
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#408829'
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: ['#eee']
+                                }
+                            }
+                        },
+
+                        valueAxis: {
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#408829'
+                                }
+                            },
+                            splitArea: {
+                                show: true,
+                                areaStyle: {
+                                    color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: ['#eee']
+                                }
+                            }
+                        },
+                        timeline: {
+                            lineStyle: {
+                                color: '#408829'
+                            },
+                            controlStyle: {
+                                normal: { color: '#408829' },
+                                emphasis: { color: '#408829' }
+                            }
+                        },
+
+                        k: {
+                            itemStyle: {
+                                normal: {
+                                    color: '#68a54a',
+                                    color0: '#a9cba2',
+                                    lineStyle: {
+                                        width: 1,
+                                        color: '#408829',
+                                        color0: '#86b379'
+                                    }
+                                }
+                            }
+                        },
+                        map: {
+                            itemStyle: {
+                                normal: {
+                                    areaStyle: {
+                                        color: '#ddd'
+                                    },
+                                    label: {
+                                        textStyle: {
+                                            color: '#c12e34'
+                                        }
+                                    }
+                                },
+                                emphasis: {
+                                    areaStyle: {
+                                        color: '#99d2dd'
+                                    },
+                                    label: {
+                                        textStyle: {
+                                            color: '#c12e34'
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        force: {
+                            itemStyle: {
+                                normal: {
+                                    linkStyle: {
+                                        strokeColor: '#408829'
+                                    }
+                                }
+                            }
+                        },
+                        chord: {
+                            padding: 4,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        width: 1,
+                                        color: 'rgba(128, 128, 128, 0.5)'
+                                    },
+                                    chordStyle: {
+                                        lineStyle: {
+                                            width: 1,
+                                            color: 'rgba(128, 128, 128, 0.5)'
+                                        }
+                                    }
+                                },
+                                emphasis: {
+                                    lineStyle: {
+                                        width: 1,
+                                        color: 'rgba(128, 128, 128, 0.5)'
+                                    },
+                                    chordStyle: {
+                                        lineStyle: {
+                                            width: 1,
+                                            color: 'rgba(128, 128, 128, 0.5)'
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        
+                        textStyle: {
+                            fontFamily: 'Arial, Verdana, sans-serif'
+                        }
+                    };
+
+                    if ($('#amount_bar_horizontal').length) {
+
+                        var echartBar = echarts.init(document.getElementById('amount_bar_horizontal'), theme);
+
+                        echartBar.setOption({
+                            title: {
+                                text: 'Traffic Rank',
+                                subtext: 'bar graph'
+                            },
+                            grid : {
+                                left: '120px'
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    saveAsImage: {
+                                        show: true,
+                                        title: "traffic_rank_image"
+                                    }
+                                }
+                            },
+                            calculable: true,
+                            xAxis: [{
+                                type: 'value'
+                            }],
+                            yAxis: [{
+                                type: 'category',
+                                data: [
+                                      {% for amount in top5_data.amount_list reversed %}
+                                        {% if forloop.last %}
+                                            '{{ amount.conzone_name }}\n({{amount.route_name}})'
+                                        {% else %}
+                                            '{{ amount.conzone_name }}\n({{amount.route_name}})',
+                                        {% endif %}
+                                      {% endfor %}
+                                    ]
+                            }],
+                            series: [{
+                                type: 'bar',
+                                barWidth : 30,
+                                data: [
+                                      {% for amount in top5_data.amount_list reversed %}
+                                        {% if forloop.last %}
+                                            '{{ amount.amount }}'
+                                        {% else %}
+                                            '{{ amount.amount }}',
+                                        {% endif %}
+                                      {% endfor %}
+                                  ]
+                            }]
+                        });
+
+                    }
+
+                  </script>
+                  <div class="col-lg-4">
+                    <div class="x_title">
+                      <h2>속도</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <canvas id="speedBarChart" style="height: 400px;"></canvas>
+                    </div>
+                  </div>
+                  <script type="text/javascript">
+                    // Bar chart
+
+                    if ($('#speedBarChart').length) {
+
+                        var ctx = document.getElementById("speedBarChart");
+                        var mybarChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: [
+                                    {% for speed in top5_data.speed_list %}
+                                      {% if forloop.last %}
+                                          '{{ speed.conzone_name }}({{ speed.route_name }})'
+                                      {% else %}
+                                          '{{ speed.conzone_name }}({{ speed.route_name }})',
+                                      {% endif %}
+                                    {% endfor %}
+                                  ],
+                                datasets: [{
+                                    label: 'speed',
+                                    backgroundColor: "#03586A",
+                                    data: [
+                                        {% for speed in top5_data.speed_list %}
+                                          {% if forloop.last %}
+                                              '{{ speed.speed}}'
+                                          {% else %}
+                                              '{{ speed.speed}}',
+                                          {% endif %}
+                                        {% endfor %}
+                                    ]
+                                }]
+                            },
+
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }],
+                                    xAxes: [{
+                                      barPercentage : 0.4
+                                    }]
+                                }
+                            },
+                            plugins: [{
+                              beforeInit: function (chart) {
+                                chart.data.labels.forEach(function (label, index, labelsArr) {
+                                  if (/\n/.test(label)) {
+                                    labelsArr[index] = label.split(/\n/)
+                                  }
+                                })
+                              }
+                            }]
+                        });
+
+                    }
+
+                  </script>
+                  <div class="col-lg-4">
+                    <div class="x_title">
+                      <h2>점유율</h2>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>구간명</th>
+                            <th>도로명</th>
+                            <th>점유율</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for ratio in top5_data.ratio_list %}
+                            <tr>
+                              <th scope="row">{{forloop.counter}}</th>
+                              <td>{{ratio.conzone_name}}</td>
+                              <td>{{ratio.route_name}}</td>
+                              <td>{{ratio.ratio}}%</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>                         
+                </div>
+              </div>
+            </div>
+            <!--Top 5 data end-->
+          </div>
+
+          <!-- <div class="row">
+            <div class="col-lg-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Line Graph <small>Sessions</small></h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content2">
+                  <div id="graph_line" style="width:100%; height:300px;"></div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          </div>
+
+          </div>
+
+          
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- Bootstrap -->
+    <script src="{% static '/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static '/vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static '/vendors/nprogress/nprogress.js' %}"></script>
+    
+    <!-- gauge.js -->
+    <script src="{% static '/vendors/gauge.js/dist/gauge.min.js' %}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{% static '/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static '/vendors/iCheck/icheck.min.js' %}"></script>
+    <!-- Skycons -->
+    <script src="{% static '/vendors/skycons/skycons.js' %}"></script>
+    <!-- Flot -->
+    <script src="{% static '/vendors/Flot/jquery.flot.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.time.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.stack.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.resize.js' %}"></script>
+    <!-- Flot plugins -->
+    <script src="{% static '/vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
+    <script src="{% static '/vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
+    <script src="{% static '/vendors/flot.curvedlines/curvedLines.js' %}"></script>
+    <!-- DateJS -->
+    <script src="{% static '/vendors/DateJS/build/date.js' %}"></script>
+    <!-- JQVMap -->
+    <script src="{% static '/vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
+    <script src="{% static '/vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
+    <script src="{% static '/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %} "></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static '/vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static '/vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static '/build/js/custom.min.js' %}"></script>
+	
+  </body>
+</html>

@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="icon" href="images/favicon.ico" type="image/ico" />
+
+    <title>Traffic Infomation</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static '/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static '/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static '/vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static '/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+	
+    <!-- bootstrap-progressbar -->
+    <link href="{% static '/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{% static '/vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static '/vendors/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static '/build/css/custom.min.css' %}" rel="stylesheet">
+
+    <!--추가 css -->
+    <link href="{% static '/css/custom/style.css' %}" rel="stylesheet">
+
+    <!-- speed gauges canvas js-->
+    <script type="text/javascript" src="{% static '/build/js/canvas-gauge/gauge.min.js' %}"></script>
+
+    <script type="text/javascript">
+      
+
+
+    </script>
+    
+  </head>
+
+  <body class="nav-sm">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-car"></i> <span>Traffic</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a href="/"><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                  
+                  </li>
+                  <!-- <li><a href="/statistics"><i class="fa fa-bar-chart"></i> Statistics <span class="fa fa-chevron-down"></span></a>
+                    
+                  </li> -->
+                  <li><a href="/infomation"><i class="fa fa-info"></i> Infomation <span class="fa fa-chevron-down"></span></a>
+                    
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <nav class="nav navbar-nav">
+                <select id="search-road" class="form-control">
+                  <option></option>
+                </select>
+              </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <!-- top tiles -->
+          <!--전체 요약 통계량 표시 start-->
+          <div class="row justify-content-center">
+            
+              <div class="tile_count">
+                <div class="col-sm-6 col-md-3 tile_stats_count">
+                  <span class="count_top"><i class="fa fa-car"></i> Total Traffic</span>
+                  <div class="count">3,352</div>
+                  <span class="count_bottom"><i class="green">4% </i> From last Week</span>
+                </div>
+                <div class="col-sm-6 col-md-3 tile_stats_count">
+                  <span class="count_top"><i class="fa fa-user"></i> Today Accident</span>
+                  <div class="count green">56</div>
+                  <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+                </div>
+                <div class="col-sm-6 col-md-3 tile_stats_count">
+                  <span class="count_top"><i class="fa fa-user"></i> Total Females</span>
+                  <div class="count">4,567</div>
+                  <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+                </div>
+                <div class="col-sm-6 col-md-3 tile_stats_count">
+                  <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
+                  <div class="count">2,315</div>
+                  <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+                </div>
+              </div>
+              
+            
+          </div>
+          <!--전체 요약 통계량 표시 end-->
+          <!-- /top tiles -->
+
+
+          
+          <br />
+
+          <!--지도는 여기에 start-->
+          <div class="row">
+      
+            <!--지도 start-->
+            <div class="col-lg-9">
+              
+              <div class="x_panel" id="mapArea">
+                <div class="x_title">
+                  <h2>
+                      Visitors location 
+                      <small>geo-presentation</small>
+
+                  </h2>
+                  
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                  </ul>
+                  <div class="clearfix">
+                  </div>
+                </div>
+                <div class="x_content">
+                  <div class="map_wrap">
+                    <div id="map" style="width:100%;height:500px;margin: 0 auto;"></div>
+
+                    <div id="menu_wrap" class="bg_white">
+                      <div class="option">
+                          <div>
+                              <form onsubmit="searchPlaces(); return false;">
+                                  키워드 : <input type="text" value="" id="keyword" size="15" placeholder="장소 입력"> 
+                                  <button type="submit">검색하기</button> 
+                              </form>
+                          </div>
+                      </div>
+                      <hr>
+                      <ul id="placesList"></ul>
+                      <div id="pagination"></div>
+                    </div>
+                  </div>
+                  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7cf7bd4a205c65330852a76afadf474f&libraries=services"></script>
+                  <script>
+                      // 마커를 담을 배열입니다
+                      var markers = [];
+
+                      var container = document.getElementById('map');
+                      var options = {
+                          center: new kakao.maps.LatLng(33.450701, 126.570667),
+                          level: 3
+                      };
+
+                      var map = new kakao.maps.Map(container, options);
+                      map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);    
+
+                      // 장소 검색 객체를 생성합니다
+                      var ps = new kakao.maps.services.Places();  
+
+                      // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+                      var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+                      // 키워드로 장소를 검색합니다
+                      searchPlaces();
+
+                      // 키워드 검색을 요청하는 함수입니다
+                      function searchPlaces() {
+
+                          var keyword = document.getElementById('keyword').value;
+
+                          // if (!keyword.replace(/^\s+|\s+$/g, '')) {
+                          //     alert('키워드를 입력해주세요!');
+                          //     return false;
+                          // }
+
+                          // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+                          ps.keywordSearch( keyword, placesSearchCB); 
+                      }
+
+                      // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+                      function placesSearchCB(data, status, pagination) {
+                          if (status === kakao.maps.services.Status.OK) {
+
+                              // 정상적으로 검색이 완료됐으면
+                              // 검색 목록과 마커를 표출합니다
+                              displayPlaces(data);
+
+                              // 페이지 번호를 표출합니다
+                              displayPagination(pagination);
+
+                          } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+                              alert('검색 결과가 존재하지 않습니다.');
+                              return;
+
+                          } else if (status === kakao.maps.services.Status.ERROR) {
+
+                              alert('검색 결과 중 오류가 발생했습니다.');
+                              return;
+
+                          }
+                      }
+
+                      // 검색 결과 목록과 마커를 표출하는 함수입니다
+                      function displayPlaces(places) {
+
+                          var listEl = document.getElementById('placesList'), 
+                          menuEl = document.getElementById('menu_wrap'),
+                          fragment = document.createDocumentFragment(), 
+                          bounds = new kakao.maps.LatLngBounds(), 
+                          listStr = '';
+                          
+                          // 검색 결과 목록에 추가된 항목들을 제거합니다
+                          removeAllChildNods(listEl);
+
+                          // 지도에 표시되고 있는 마커를 제거합니다
+                          removeMarker();
+                          
+                          for ( var i=0; i<places.length; i++ ) {
+
+                              // 마커를 생성하고 지도에 표시합니다
+                              var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+                                  marker = addMarker(placePosition, i), 
+                                  itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+                              // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                              // LatLngBounds 객체에 좌표를 추가합니다
+                              bounds.extend(placePosition);
+
+                              // 마커와 검색결과 항목에 mouseover 했을때
+                              // 해당 장소에 인포윈도우에 장소명을 표시합니다
+                              // mouseout 했을 때는 인포윈도우를 닫습니다
+                              (function(marker, title) {
+                                  kakao.maps.event.addListener(marker, 'mouseover', function() {
+                                      displayInfowindow(marker, title);
+                                  });
+
+                                  kakao.maps.event.addListener(marker, 'mouseout', function() {
+                                      infowindow.close();
+                                  });
+
+                                  itemEl.onmouseover =  function () {
+                                      displayInfowindow(marker, title);
+                                  };
+
+                                  itemEl.onmouseout =  function () {
+                                      infowindow.close();
+                                  };
+                              })(marker, places[i].place_name);
+
+                              fragment.appendChild(itemEl);
+                          }
+
+                          // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+                          listEl.appendChild(fragment);
+                          menuEl.scrollTop = 0;
+
+                          // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+                          map.setBounds(bounds);
+                      }
+
+                      // 검색결과 항목을 Element로 반환하는 함수입니다
+                      function getListItem(index, places) {
+
+                          var el = document.createElement('li'),
+                          itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                                      '<div class="info">' +
+                                      '   <h5>' + places.place_name + '</h5>';
+
+                          if (places.road_address_name) {
+                              itemStr += '    <span>' + places.road_address_name + '</span>' +
+                                          '   <span class="jibun gray">' +  places.address_name  + '</span>';
+                          } else {
+                              itemStr += '    <span>' +  places.address_name  + '</span>'; 
+                          }
+                                       
+                            itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                                      '</div>';           
+
+                          el.innerHTML = itemStr;
+                          el.className = 'item';
+
+                          return el;
+                      }
+
+                      // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+                      function addMarker(position, idx, title) {
+                          var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                              imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+                              imgOptions =  {
+                                  spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                                  spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                                  offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                              },
+                              markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                                  marker = new kakao.maps.Marker({
+                                  position: position, // 마커의 위치
+                                  image: markerImage 
+                              });
+
+                          marker.setMap(map); // 지도 위에 마커를 표출합니다
+                          markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+                          return marker;
+                      }
+
+                      // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+                      function removeMarker() {
+                          for ( var i = 0; i < markers.length; i++ ) {
+                              markers[i].setMap(null);
+                          }   
+                          markers = [];
+                      }
+
+                      // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+                      function displayPagination(pagination) {
+                          var paginationEl = document.getElementById('pagination'),
+                              fragment = document.createDocumentFragment(),
+                              i; 
+
+                          // 기존에 추가된 페이지번호를 삭제합니다
+                          while (paginationEl.hasChildNodes()) {
+                              paginationEl.removeChild (paginationEl.lastChild);
+                          }
+
+                          for (i=1; i<=pagination.last; i++) {
+                              var el = document.createElement('a');
+                              el.href = "#";
+                              el.innerHTML = i;
+
+                              if (i===pagination.current) {
+                                  el.className = 'on';
+                              } else {
+                                  el.onclick = (function(i) {
+                                      return function() {
+                                          pagination.gotoPage(i);
+                                      }
+                                  })(i);
+                              }
+
+                              fragment.appendChild(el);
+                          }
+                          paginationEl.appendChild(fragment);
+                      }
+
+                      // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+                      // 인포윈도우에 장소명을 표시합니다
+                      function displayInfowindow(marker, title) {
+                          var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+                          infowindow.setContent(content);
+                          infowindow.open(map, marker);
+                      }
+
+                       // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+                      function removeAllChildNods(el) {   
+                          while (el.hasChildNodes()) {
+                              el.removeChild (el.lastChild);
+                          }
+                      }
+
+                     
+
+                  </script>
+                </div>
+              </div>
+            </div>
+            <!--지도 end-->
+
+            <!--평균속도, 주행차량종류 데이터 start-->
+            <div class="col-lg-3">
+              <div class="x_panel tile">
+                <div class="x_title">
+                  <h2>Average of Speed</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <!--평균속도게이지 start-->
+                  <div class="col-lg">
+                    <canvas id="speed-gauge" data-type="radial-gauge"
+                        data-width="300"
+                        data-height="300"
+                        data-units="Km/h"
+                        data-title="false"
+                        data-min-value="0"
+                        data-max-value="220"
+                        data-value="110.7"
+                        data-animate-on-init="true"
+                        data-major-ticks="0,20,40,60,80,100,120,140,160,180,200,220"
+                        data-minor-ticks="2"
+                        data-stroke-ticks="true"
+                        data-highlights='[{"from": 160, "to": 220, "color": "rgba(200, 50, 50, .75)"}]'
+                        data-color-plate="#222"
+                        data-color-major-ticks="#f5f5f5"
+                        data-color-minor-ticks="#ddd"
+                        data-color-title="#fff"
+                        data-color-units="#ccc"
+                        data-color-numbers="#eee"
+                        data-color-needle-start="rgba(240, 128, 128, 1)"
+                        data-color-needle-end="rgba(255, 160, 122, .9)"
+                        data-value-box="true"
+                        data-font-value="Repetition"
+                        data-font-numbers="Repetition"
+                        data-animated-value="true"
+                        data-borders="false"
+                        data-border-shadow-width="0"
+                        data-needle-type="arrow"
+                        data-needle-width="2"
+                        data-needle-circle-size="7"
+                        data-needle-circle-outer="true"
+                        data-needle-circle-inner="false"
+                        data-animation-duration="1500"
+                        data-animation-rule="linear"
+                        data-ticks-angle="250"
+                        data-start-angle="55"
+                        data-color-needle-shadow-down="#333"
+                        data-value-box-width="45"
+                    ></canvas>
+                  </div>
+                  <!--평균속도게이지 end-->
+
+                  <!--차종 start-->
+                  <div class="col-lg mt-5">
+                    <table class="table table-bordered">
+                      <colgroup>
+                        <col width="30%" />
+                        <col/>
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th>vehicle</th>
+                          <th>count</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Truck</td>
+                          <td>512</td>
+                        </tr>
+                        <tr>
+                          <td>Bus</td>
+                          <td>30</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!--차종 end-->
+                </div>
+              </div>
+            </div>
+            <!--평균속도, 주행차량종류 데이터 end-->
+            
+          </div>
+          <!--지도는 여기에 end-->
+
+          <div class="row">
+
+            <div class="col-md-4">
+                <div class="x_panel tile fixed_height_320">
+                  <div class="x_title">
+                    <h2>App Versions</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <h4>App Usage across versions</h4>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>0.1.5.2</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 66%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>123k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>0.1.5.3</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>53k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>0.1.5.4</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>23k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>0.1.5.5</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>3k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="widget_summary">
+                      <div class="w_left w_25">
+                        <span>0.1.5.6</span>
+                      </div>
+                      <div class="w_center w_55">
+                        <div class="progress">
+                          <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">
+                            <span class="sr-only">60% Complete</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w_right w_20">
+                        <span>1k</span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+
+                  </div>
+                </div>
+            </div>
+          
+
+            <div class="col-md-4">
+              <div class="x_panel tile fixed_height_320 overflow_hidden">
+                <div class="x_title">
+                  <h2>Device Usage</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#">Settings 1</a>
+                          <a class="dropdown-item" href="#">Settings 2</a>
+                        </div>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <table class="" style="width:100%">
+                    <tr>
+                      <th style="width:37%;">
+                        <p>Top 5</p>
+                      </th>
+                      <th>
+                        <div class="col-lg-7 col-md-7 col-sm-7 ">
+                          <p class="">Device</p>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5 ">
+                          <p class="">Progress</p>
+                        </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <canvas class="canvasDoughnut" height="140" width="140" style="margin: 15px 10px 10px 0"></canvas>
+                      </td>
+                      <td>
+                        <table class="tile_info">
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square blue"></i>IOS </p>
+                            </td>
+                            <td>30%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square green"></i>Android </p>
+                            </td>
+                            <td>10%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square purple"></i>Blackberry </p>
+                            </td>
+                            <td>20%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square aero"></i>Symbian </p>
+                            </td>
+                            <td>15%</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p><i class="fa fa-square red"></i>Others </p>
+                            </td>
+                            <td>30%</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Line Graph <small>Sessions</small></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Settings 1</a>
+                        <a class="dropdown-item" href="#">Settings 2</a>
+                      </div>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content2">
+                  <div id="graph_line" style="width:100%; height:300px;"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <!--텍스트형태의 실시간데이터 start-->
+            <div class="col-md-6 col-sm-6 ">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Current News </h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#">Settings 1</a>
+                          <a class="dropdown-item" href="#">Settings 2</a>
+                        </div>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <div class="dashboard-widget-content">
+
+                    <ul class="list-unstyled timeline widget">
+                      <li>
+                        <div class="block">
+                          <div class="block_content">
+                            <h2 class="title">
+                                              <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                          </h2>
+                            <div class="byline">
+                              <span>13 hours ago</span> by <a>Jane Smith</a>
+                            </div>
+                            <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="block">
+                          <div class="block_content">
+                            <h2 class="title">
+                                              <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                          </h2>
+                            <div class="byline">
+                              <span>13 hours ago</span> by <a>Jane Smith</a>
+                            </div>
+                            <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="block">
+                          <div class="block_content">
+                            <h2 class="title">
+                                              <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                          </h2>
+                            <div class="byline">
+                              <span>13 hours ago</span> by <a>Jane Smith</a>
+                            </div>
+                            <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="block">
+                          <div class="block_content">
+                            <h2 class="title">
+                                              <a>Who Needs Sundance When You’ve Got&nbsp;Crowdfunding?</a>
+                                          </h2>
+                            <div class="byline">
+                              <span>13 hours ago</span> by <a>Jane Smith</a>
+                            </div>
+                            <p class="excerpt">Film festivals used to be do-or-die moments for movie makers. They were where you met the producers that could fund your project, and if the buyers liked your flick, they’d pay to Fast-forward and… <a>Read&nbsp;More</a>
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--텍스트형태의 실시간데이터 end-->
+
+            <!-- 텍스트형태의 실시간데이터 2 start -->
+              <div class="col-md-6 col-sm-6 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>To Do List <small>Sample tasks</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Settings 1</a>
+                            <a class="dropdown-item" href="#">Settings 2</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <div class="">
+                      <ul class="to_do">
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Schedule meeting with new client </p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Create email address for new intern</p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Have IT fix the network printer</p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Copy backups to offsite location</p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Food truck fixie locavors mcsweeney</p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Food truck fixie locavors mcsweeney</p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Create email address for new intern</p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Have IT fix the network printer</p>
+                        </li>
+                        <li>
+                          <p>
+                            <input type="checkbox" class="flat"> Copy backups to offsite location</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--  텍스트형태의 실시간데이터 2 end -->
+          </div>
+
+
+          <div class="row">
+
+            <!-- start of weather widget -->
+            <div class="col-md-12 col-sm-12 ">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Daily active users <small>Sessions</small></h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#">Settings 1</a>
+                          <a class="dropdown-item" href="#">Settings 2</a>
+                        </div>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="temperature"><b>Monday</b>, 07:30 AM
+                        <span>F</span>
+                        <span><b>C</b></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="weather-icon">
+                        <canvas height="84" width="84" id="partly-cloudy-day"></canvas>
+                      </div>
+                    </div>
+                    <div class="col-sm-8">
+                      <div class="weather-text">
+                        <h2>Texas <br><i>Partly Cloudy Day</i></h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="weather-text pull-right">
+                      <h3 class="degrees">23</h3>
+                    </div>
+                  </div>
+
+                  <div class="clearfix"></div>
+
+                  <div class="row weather-days">
+                    <div class="col-sm-2">
+                      <div class="daily-weather">
+                        <h2 class="day">Mon</h2>
+                        <h3 class="degrees">25</h3>
+                        <canvas id="clear-day" width="32" height="32"></canvas>
+                        <h5>15 <i>km/h</i></h5>
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="daily-weather">
+                        <h2 class="day">Tue</h2>
+                        <h3 class="degrees">25</h3>
+                        <canvas height="32" width="32" id="rain"></canvas>
+                        <h5>12 <i>km/h</i></h5>
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="daily-weather">
+                        <h2 class="day">Wed</h2>
+                        <h3 class="degrees">27</h3>
+                        <canvas height="32" width="32" id="snow"></canvas>
+                        <h5>14 <i>km/h</i></h5>
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="daily-weather">
+                        <h2 class="day">Thu</h2>
+                        <h3 class="degrees">28</h3>
+                        <canvas height="32" width="32" id="sleet"></canvas>
+                        <h5>15 <i>km/h</i></h5>
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="daily-weather">
+                        <h2 class="day">Fri</h2>
+                        <h3 class="degrees">28</h3>
+                        <canvas height="32" width="32" id="wind"></canvas>
+                        <h5>11 <i>km/h</i></h5>
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="daily-weather">
+                        <h2 class="day">Sat</h2>
+                        <h3 class="degrees">26</h3>
+                        <canvas height="32" width="32" id="cloudy"></canvas>
+                        <h5>10 <i>km/h</i></h5>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+
+              </div>
+            <!-- end of weather widget -->
+            </div>
+
+            <!--좀 덜중요한 데이터..?-->
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="dashboard_graph">
+
+                  <div class="row x_title">
+                    <div class="col-md-6">
+                      <h3>Network Activities <small>Graph title sub-title</small></h3>
+                    </div>
+                    <div class="col-md-6">
+                      <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-9 col-sm-9 ">
+                    <div id="chart_plot_01" class="demo-placeholder"></div>
+                  </div>
+                  <div class="col-md-3 col-sm-3  bg-white">
+                    <div class="x_title">
+                      <h2>Top Campaign Performance</h2>
+                      <div class="clearfix"></div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 ">
+                      <div>
+                        <p>Facebook Campaign</p>
+                        <div class="">
+                          <div class="progress progress_sm" style="width: 76%;">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="80"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <p>Twitter Campaign</p>
+                        <div class="">
+                          <div class="progress progress_sm" style="width: 76%;">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 ">
+                      <div>
+                        <p>Conventional Media</p>
+                        <div class="">
+                          <div class="progress progress_sm" style="width: 76%;">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <p>Bill boards</p>
+                        <div class="">
+                          <div class="progress progress_sm" style="width: 76%;">
+                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+
+            </div>
+            <!--좀 덜중요한데이터 end-->
+            
+          </div>
+
+          
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% static '/vendors/jquery/dist/jquery.min.js'%}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static '/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- FastClick -->
+    <script src="{% static '/vendors/fastclick/lib/fastclick.js' %}"></script>
+    <!-- NProgress -->
+    <script src="{% static '/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- Chart.js -->
+    <script src="{% static '/vendors/Chart.js/dist/Chart.min.js' %}"></script>
+    <!-- gauge.js -->
+    <script src="{% static '/vendors/gauge.js/dist/gauge.min.js' %}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{% static '/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static '/vendors/iCheck/icheck.min.js' %}"></script>
+    <!-- Skycons -->
+    <script src="{% static '/vendors/skycons/skycons.js' %}"></script>
+    <!-- Flot -->
+    <script src="{% static '/vendors/Flot/jquery.flot.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.time.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.stack.js' %}"></script>
+    <script src="{% static '/vendors/Flot/jquery.flot.resize.js' %}"></script>
+    <!-- Flot plugins -->
+    <script src="{% static '/vendors/flot.orderbars/js/jquery.flot.orderBars.js' %}"></script>
+    <script src="{% static '/vendors/flot-spline/js/jquery.flot.spline.min.js' %}"></script>
+    <script src="{% static '/vendors/flot.curvedlines/curvedLines.js' %}"></script>
+    <!-- DateJS -->
+    <script src="{% static '/vendors/DateJS/build/date.js' %}"></script>
+    <!-- JQVMap -->
+    <script src="{% static '/vendors/jqvmap/dist/jquery.vmap.js' %}"></script>
+    <script src="{% static '/vendors/jqvmap/dist/maps/jquery.vmap.world.js' %}"></script>
+    <script src="{% static '/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js' %} "></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{% static '/vendors/moment/min/moment.min.js' %}"></script>
+    <script src="{% static '/vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static '/build/js/custom.min.js' %}"></script>
+	
+  </body>
+</html>
