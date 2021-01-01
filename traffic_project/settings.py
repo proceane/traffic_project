@@ -128,7 +128,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 #Extra lookup directories for collectststic to find ststic files
 STATICFILES_DIRS = (
-        os.path.join(PROJECT_ROOT, 'static')
+        os.path.join(PROJECT_ROOT, 'static'),
 )
 
 #add configuration for static files storage using whitenoise
