@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'k6_v^^z0f@lo4*rc8v_b^n_rwfsoa%
 #DEBUG = True #개발시에 주석해제
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'highway-traffic.herokuapp.com']
 
 # Application definition
 
@@ -122,10 +122,17 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+#Extra lookup directories for collectststic to find ststic files
+STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, 'static')
+)
+
+#add configuration for static files storage using whitenoise
+STATICFILES_STORAGES = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 DATA_URL = '/data/'
 DATA_ROOT = os.path.join(BASE_DIR, 'data')

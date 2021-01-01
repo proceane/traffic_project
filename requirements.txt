@@ -1,5 +1,5 @@
 aiohttp==3.7.3
-asgiref @ file:///tmp/build/80754af9/asgiref_1605055780383/work
+asgiref ==3.3.1
 async-timeout==3.0.1
 attrs==20.3.0
 beautifulsoup4==4.9.3
@@ -7,20 +7,20 @@ bs4==0.0.1
 certifi==2020.12.5
 chardet==3.0.4
 dj-database-url==0.5.0
-Django @ file:///tmp/build/80754af9/django_1606860386887/work
+Django ==3.1.4
 django-heroku==0.3.1
 gunicorn==20.0.4
 idna==2.10
 multidict==5.1.0
 numpy==1.19.4
 pandas==1.2.0
-psycopg2 @ file:///C:/ci/psycopg2_1594305172475/work
+psycopg2 ==2.8.5
 python-dateutil==2.8.1
-pytz @ file:///tmp/build/80754af9/pytz_1606604771399/work
+pytz ==2020.4
 requests==2.25.1
 six==1.15.0
 soupsieve==2.1
-sqlparse @ file:///tmp/build/80754af9/sqlparse_1602184451250/work
+sqlparse ==0.4.1
 static3==0.7.0
 typing-extensions==3.7.4.3
 urllib3==1.26.2
