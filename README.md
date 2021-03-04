@@ -76,5 +76,11 @@ If you search for a highway and section using the select box, you can see the tr
 At the bottom, you can see the traffic, speed, and occupancy Top-5 sections.
 
 ## Reference
+### html template
+https://github.com/ColorlibHQ/gentelella
 
+### Django guide
+https://docs.djangoproject.com/ko/3.1/intro/tutorial01/
 
+### Anaconda virtual environment guide
+https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
