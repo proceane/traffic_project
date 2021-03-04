@@ -42,3 +42,10 @@ pip install django
 ```
 django-admin startproject traffic_project
 ```
+'traffic_project'는 이 프로젝트명과 동일하기 때문에 바꾸지 않는것을 권장합니다.<br>
+Since 'traffic_project' is the same as this project name, it is not recommended to change it.<br>
+
+5. 해당 github파일을 해당 프로젝트에 넣습니다.
+ 
+
+
