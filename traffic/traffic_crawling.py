@@ -27,7 +27,7 @@ def get_vms_message(request):
 # 구간 교통량 조회
 def get_traffic_data(request):
 	traffic_data = {}
-	req = requests.get('http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?key="+key+"&type=xml')
+	req = requests.get('http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?key='+key+'&type=xml')
 	html = req.text
 	soup = BeautifulSoup(html, 'html.parser')
 	traffic_list = soup.findAll('list')
@@ -68,7 +68,7 @@ def get_top5_data(request):
 	conzone_name = []	#구간명
 	route_name =[]		#고속도로명
 
-	req = requests.get('http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?key="+key+"&type=xml')
+	req = requests.get('http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?key='+key+'&type=xml')
 	html = req.text
 	soup = BeautifulSoup(html, 'html.parser')
 	traffic_list = soup.findAll('list')
