@@ -68,6 +68,13 @@ python manage.py runserver
 
 ## Example of use
 ![교통량_img_1](https://user-images.githubusercontent.com/62143949/109973695-13491b00-7d3c-11eb-9552-9a67c3ae87d4.JPG)
-select box로 고속도로와 구간을 검색하면 해당 구간의 교통량, 평균통행시간, 평균속도, 점유율을 확인할수 있습니다.
+select box로 고속도로와 구간을 검색하면 해당 구간의 교통량, 평균통행시간, 평균속도, 점유율을 확인할 수 있습니다.<br>
+If you search for a highway and section using the select box, you can see the traffic, average time, average speed and occupancy rate of the section.
+
+![교통량_img_2](https://user-images.githubusercontent.com/62143949/109973821-3378da00-7d3c-11eb-8c66-a1c9c3b570fd.JPG)
+하단에서는 교통량, 속도, 점유율 Top5구간을 확인할 수 있습니다.<br>
+At the bottom, you can see the traffic, speed, and occupancy Top-5 sections.
+
+## Reference
 
 
