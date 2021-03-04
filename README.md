@@ -67,3 +67,4 @@ python manage.py runserver
 ```
 
 ## Example of use
+![교통량_img_1](https://user-images.githubusercontent.com/62143949/109973695-13491b00-7d3c-11eb-9552-9a67c3ae87d4.JPG)
