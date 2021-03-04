@@ -27,10 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'k6_v^^z0f@lo4*rc8v_b^n_rwfsoa%cii*q4j44@zxj6tk@g78')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True #개발시에 주석해제
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+DEBUG = True #개발시에 주석해제
+#DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['127.0.0.1', 'highway-traffic.herokuapp.com']
+#ALLOWED_HOSTS = ['127.0.0.1', 'highway-traffic.herokuapp.com']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -123,8 +124,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static') #개발시 주석해제
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') #개발시 주석해제
+#STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 #Extra lookup directories for collectststic to find ststic files
