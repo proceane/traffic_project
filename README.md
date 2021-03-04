@@ -47,5 +47,23 @@ Since 'traffic_project' is the same as this project name, it is not recommended 
 
 5. 해당 github파일을 해당 프로젝트에 넣습니다.
  
+### Authentication key
+프로그램을 사용하기 위해서는 인증키가 필요합니다.<br>
+You need an authentication key to use the program.
 
+https://data.ex.co.kr/openapi/apikey/requestKey 에서 인증키를 받으세요.<br>
+Get an authentication key from the link.
 
+인증키를 받은 후에 traffic_crawling.py 7행에 인증키를 입력합니다.<br>
+After get an authentication key, enter an key in traffic_crawling.py line 7
+```python
+key = "" # http://data.ex.co.kr/에서 발급받은 키
+```
+
+### Run project
+manage.py가 있는 디렉터리에서 해당 명령어를 입력합니다.
+```
+python manage.py runserver
+```
+
+## Example of use
